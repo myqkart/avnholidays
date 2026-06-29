@@ -95,4 +95,38 @@ body {
   animation: float-slow 7s ease-in-out infinite;
 }
 
+@keyframes globe-spin {
+  0% { transform: rotateY(0deg) rotateX(15deg); }
+  100% { transform: rotateY(360deg) rotateX(15deg); }
+}
+
+.animate-globe-spin {
+  animation: globe-spin 25s linear infinite;
+}
+
+@keyframes dash-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.animate-dash-draw {
+  stroke-dasharray: 8;
+  stroke-dashoffset: 100;
+  animation: dash-draw 3s linear infinite;
+}
+
+@keyframes float-drift {
+  0%, 100% { transform: translateY(0px) rotate(-1deg) translateX(0px); }
+  50% { transform: translateY(-12px) rotate(2deg) translateX(5px); }
+}
+
+.animate-float-drift {
+  animation: float-drift 9s ease-in-out infinite;
+}
+
+.clip-magazine {
+  clip-path: polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%);
+}
+
 
