@@ -449,6 +449,46 @@ export default function Home() {
   const [activeChapterIndex, setActiveChapterIndex] = useState(0);
   const [journeyProgress, setJourneyProgress] = useState(0);
 
+  // Section 5 (Hotels) Refs
+  const hotelsContainerRef = useRef<HTMLDivElement>(null);
+  const hotelsIntroRef = useRef<HTMLDivElement>(null);
+  const hotelsContentRef = useRef<HTMLDivElement>(null);
+  const hotelSceneRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const hotelPanelRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const reservationConsoleRef = useRef<HTMLDivElement>(null);
+
+  // Section 5 (Hotels) States
+  const [activeSceneIndex, setActiveSceneIndex] = useState(0);
+  const [activeHotelTypeIndex, setActiveHotelTypeIndex] = useState(0);
+  const [hotelsProgress, setHotelsProgress] = useState(0);
+
+  // Section 6 (Globe Network) Refs
+  const globeContainerRef = useRef<HTMLDivElement>(null);
+  const globeIntroRef = useRef<HTMLDivElement>(null);
+  const globeSphereRef = useRef<HTMLDivElement>(null);
+  const globeMapRef = useRef<HTMLDivElement>(null);
+  const membershipCardRef = useRef<HTMLDivElement>(null);
+
+  // Section 6 (Globe Network) States
+  const [activeLayerIndex, setActiveLayerIndex] = useState(0);
+  const [globeProgress, setGlobeProgress] = useState(0);
+  const [globeCountCountries, setGlobeCountCountries] = useState(0);
+  const [globeCountFlights, setGlobeCountFlights] = useState(0);
+  const [globeCountHotels, setGlobeCountHotels] = useState(0);
+
+  // Section 7 (Super Saver Club) Refs
+  const clubContainerRef = useRef<HTMLDivElement>(null);
+  const clubIntroRef = useRef<HTMLDivElement>(null);
+  const clubCardRef = useRef<HTMLDivElement>(null);
+  const clubContentRef = useRef<HTMLDivElement>(null);
+
+  // Section 7 (Super Saver Club) States
+  const [activeBenefitIndex, setActiveBenefitIndex] = useState(0);
+  const [clubProgress, setClubProgress] = useState(0);
+  const [activeTierIndex, setActiveTierIndex] = useState(1);
+  const [clubCountMembers, setClubCountMembers] = useState(0);
+  const [clubCountOffers, setClubCountOffers] = useState(0);
+
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("explore");
@@ -1175,6 +1215,324 @@ export default function Home() {
       duration: 1.2,
       ease: "power2.inOut"
     }, 6.0);
+
+    // ====================================================
+    // GSAP Timeline for Section 5: Luxury Hotels Experience
+    // ====================================================
+    const hotelsTimeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: hotelsContainerRef.current,
+        start: "top top",
+        end: "+=380%",
+        scrub: 1.2,
+        pin: true,
+        anticipatePin: 1,
+        onUpdate: (self) => {
+          const progress = self.progress;
+          setHotelsProgress(progress);
+          const scIdx = Math.min(4, Math.floor(progress * 5));
+          setActiveSceneIndex(scIdx);
+
+          const catIdx = Math.min(5, Math.floor(progress * 6));
+          setActiveHotelTypeIndex(catIdx);
+        }
+      }
+    });
+
+    // Initial state configurations
+    gsap.set(".hotel-scene-0", { opacity: 1, scale: 1, filter: "blur(0px)" });
+    gsap.set([".hotel-scene-1", ".hotel-scene-2", ".hotel-scene-3", ".hotel-scene-4"], {
+      opacity: 0,
+      scale: 1.08,
+      filter: "blur(15px)"
+    });
+
+    // Background Radial Shifting
+    hotelsTimeline.to(".hotel-bg-backplate", {
+      background: "radial-gradient(circle at 50% 50%, rgba(251,191,36,0.14) 0%, rgba(120,53,4,0.1) 40%, rgba(9,9,11,1) 100%)",
+      duration: 1.0
+    }, 0);
+    hotelsTimeline.to(".hotel-bg-backplate", {
+      background: "radial-gradient(circle at 50% 50%, rgba(20,184,166,0.12) 0%, rgba(13,148,136,0.08) 45%, rgba(9,9,11,1) 100%)",
+      duration: 1.0
+    }, 1.2);
+    hotelsTimeline.to(".hotel-bg-backplate", {
+      background: "radial-gradient(circle at 50% 50%, rgba(56,189,248,0.14) 0%, rgba(3,105,161,0.08) 50%, rgba(9,9,11,1) 100%)",
+      duration: 1.0
+    }, 2.4);
+    hotelsTimeline.to(".hotel-bg-backplate", {
+      background: "radial-gradient(circle at 50% 50%, rgba(244,63,94,0.16) 0%, rgba(217,70,239,0.12) 50%, rgba(9,9,11,1) 100%)",
+      duration: 1.0
+    }, 3.6);
+    hotelsTimeline.to(".hotel-bg-backplate", {
+      background: "radial-gradient(circle at 50% 50%, rgba(234,179,8,0.16) 0%, rgba(168,85,247,0.12) 50%, rgba(9,9,11,1) 100%)",
+      duration: 1.0
+    }, 4.8);
+
+    // Staggered Title Heading reveal
+    hotelsTimeline.to(hotelsIntroRef.current, {
+      opacity: 0,
+      y: -60,
+      filter: "blur(8px)",
+      duration: 0.8
+    }, 0.3);
+
+    // Transition 1 (Arrival -> Lobby)
+    hotelsTimeline.to(".hotel-scene-0", {
+      opacity: 0,
+      scale: 1.15,
+      filter: "blur(12px)",
+      duration: 1.0
+    }, 0.8);
+    hotelsTimeline.to(".hotel-scene-1", {
+      opacity: 1,
+      scale: 1,
+      filter: "blur(0px)",
+      duration: 1.0
+    }, 1.2);
+
+    // Transition 2 (Lobby -> Suite)
+    hotelsTimeline.to(".hotel-scene-1", {
+      opacity: 0,
+      scale: 1.15,
+      filter: "blur(12px)",
+      duration: 1.0
+    }, 2.0);
+    hotelsTimeline.to(".hotel-scene-2", {
+      opacity: 1,
+      scale: 1,
+      filter: "blur(0px)",
+      duration: 1.0
+    }, 2.4);
+
+    // Transition 3 (Suite -> Infinity Pool)
+    hotelsTimeline.to(".hotel-scene-2", {
+      opacity: 0,
+      scale: 1.15,
+      filter: "blur(12px)",
+      duration: 1.0
+    }, 3.2);
+    hotelsTimeline.to(".hotel-scene-3", {
+      opacity: 1,
+      scale: 1,
+      filter: "blur(0px)",
+      duration: 1.0
+    }, 3.6);
+
+    // Transition 4 (Pool -> Night Experience)
+    hotelsTimeline.to(".hotel-scene-3", {
+      opacity: 0,
+      scale: 1.15,
+      filter: "blur(12px)",
+      duration: 1.0
+    }, 4.4);
+    hotelsTimeline.to(".hotel-scene-4", {
+      opacity: 1,
+      scale: 1,
+      filter: "blur(0px)",
+      duration: 1.0
+    }, 4.8);
+
+    // Float Booking Console
+    hotelsTimeline.fromTo(".hotel-booking-console",
+      { y: 100, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.8, ease: "power2.out" },
+      5.0
+    );
+
+    // Dissolve into Clouds Outro
+    hotelsTimeline.to(".hotel-clouds-outro", {
+      opacity: 1,
+      scale: 1.15,
+      filter: "blur(0px)",
+      duration: 1.2,
+      ease: "power2.inOut"
+    }, 5.8);
+
+    // ====================================================
+    // GSAP Timeline for Section 6: Interactive Global Travel Network
+    // ====================================================
+    const globeTimeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: globeContainerRef.current,
+        start: "top top",
+        end: "+=380%",
+        scrub: 1.2,
+        pin: true,
+        anticipatePin: 1,
+        onUpdate: (self) => {
+          const progress = self.progress;
+          setGlobeProgress(progress);
+          const lyrIdx = Math.min(5, Math.floor(progress * 6));
+          setActiveLayerIndex(lyrIdx);
+
+          // Counter metrics count-up
+          setGlobeCountCountries(Math.min(45, Math.floor(progress * 50)));
+          setGlobeCountFlights(Math.min(12400, Math.floor(progress * 13500)));
+          setGlobeCountHotels(Math.min(850, Math.floor(progress * 920)));
+        }
+      }
+    });
+
+    // Horizontal Map rotation tween inside sphere
+    globeTimeline.to(".globe-map-wide", {
+      xPercent: -42,
+      ease: "none",
+      duration: 5.5
+    }, 0.2);
+
+    // Title reveal fading out
+    globeTimeline.to(globeIntroRef.current, {
+      opacity: 0,
+      y: -60,
+      filter: "blur(8px)",
+      duration: 0.8
+    }, 0.3);
+
+    // Staggered Layer-specific path draws
+    globeTimeline.fromTo(".globe-path-packages", 
+      { strokeDashoffset: 600, opacity: 0 }, 
+      { strokeDashoffset: 0, opacity: 1, duration: 1.0 }, 
+      0.4
+    );
+    globeTimeline.fromTo(".globe-path-hotels", 
+      { strokeDashoffset: 600, opacity: 0 }, 
+      { strokeDashoffset: 0, opacity: 1, duration: 1.0 }, 
+      1.4
+    );
+    globeTimeline.fromTo(".globe-path-corporate", 
+      { strokeDashoffset: 600, opacity: 0 }, 
+      { strokeDashoffset: 0, opacity: 1, duration: 1.0 }, 
+      2.4
+    );
+    globeTimeline.fromTo(".globe-path-visa", 
+      { strokeDashoffset: 600, opacity: 0 }, 
+      { strokeDashoffset: 0, opacity: 1, duration: 1.0 }, 
+      3.4
+    );
+    globeTimeline.fromTo(".globe-path-groups", 
+      { strokeDashoffset: 600, opacity: 0 }, 
+      { strokeDashoffset: 0, opacity: 1, duration: 1.0 }, 
+      4.4
+    );
+    globeTimeline.fromTo(".globe-path-rentals", 
+      { strokeDashoffset: 600, opacity: 0 }, 
+      { strokeDashoffset: 0, opacity: 1, duration: 1.0 }, 
+      5.2
+    );
+
+    // Zoom into single focus city marker (fly-in camera zoom effect)
+    globeTimeline.to(".globe-sphere-wrapper", {
+      scale: 5.2,
+      x: "18vw",
+      y: "-12vh",
+      opacity: 0.12,
+      filter: "blur(6px)",
+      duration: 1.2,
+      ease: "power2.inOut"
+    }, 5.5);
+
+    // Hide surround cards
+    globeTimeline.to([".globe-panel-left", ".globe-panel-right", ".globe-stats-bar"], {
+      scale: 0.82,
+      opacity: 0,
+      filter: "blur(8px)",
+      duration: 0.8
+    }, 5.5);
+
+    // Transition marker into Gold Membership card CTA
+    globeTimeline.fromTo(".globe-cta-membership", 
+      { scale: 0.72, opacity: 0, y: 100 }, 
+      { scale: 1, opacity: 1, y: 0, duration: 1.0, ease: "power2.out" }, 
+      6.0
+    );
+
+    // ====================================================
+    // GSAP Timeline for Section 7: Super Saver Club
+    // ====================================================
+    const clubTimeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: clubContainerRef.current,
+        start: "top top",
+        end: "+=320%",
+        scrub: 1.2,
+        pin: true,
+        anticipatePin: 1,
+        onUpdate: (self) => {
+          const progress = self.progress;
+          setClubProgress(progress);
+          
+          const benIdx = Math.min(9, Math.floor(progress * 10.2));
+          setActiveBenefitIndex(benIdx);
+
+          // Counter statistics
+          setClubCountMembers(Math.min(5000, Math.floor(progress * 5300)));
+          setClubCountOffers(Math.min(100, Math.floor(progress * 108)));
+        }
+      }
+    });
+
+    // 3D Card rotation and translation to the side
+    clubTimeline.to(".club-hero-card", {
+      rotateY: 34,
+      rotateX: 10,
+      rotateZ: -5,
+      scale: 1.06,
+      x: "16vw",
+      duration: 1.5,
+      ease: "power2.inOut"
+    }, 0.2);
+
+    // Intro header reveal title fading out
+    clubTimeline.to(clubIntroRef.current, {
+      opacity: 0,
+      y: -60,
+      filter: "blur(8px)",
+      duration: 0.8
+    }, 0.3);
+
+    // Crossfading background supporting visuals (matching benefit indicators)
+    for (let i = 0; i < 9; i++) {
+      clubTimeline.to(`.club-bg-visual-${i}`, { opacity: 0, duration: 0.6 }, (i + 1) * 0.45);
+      clubTimeline.to(`.club-bg-visual-${i + 1}`, { opacity: 0.22, duration: 0.6 }, (i + 1) * 0.45);
+    }
+
+    // Interactive Material tiers slide up
+    clubTimeline.fromTo(".club-tier-samples",
+      { y: 120, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1.0, ease: "power2.out" },
+      4.2
+    );
+
+    // Flatten and dissolve card at the final scroll phase
+    clubTimeline.to(".club-hero-card", {
+      scale: 0.58,
+      opacity: 0,
+      filter: "blur(12px)",
+      duration: 1.0,
+      ease: "power2.inIn"
+    }, 5.0);
+
+    // Fade out tier swatches
+    clubTimeline.to(".club-tier-samples", {
+      opacity: 0,
+      y: 50,
+      duration: 0.8
+    }, 5.0);
+
+    // Fade in final massive CTA text
+    clubTimeline.fromTo(".club-ending-cta",
+      { y: 80, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1.0, ease: "power2.out" },
+      5.2
+    );
+
+    // Drifting travel polaroids scatter animation
+    clubTimeline.fromTo(".club-drifting-photo",
+      { opacity: 0, scale: 0.6, y: 160, rotate: -18 },
+      { opacity: 0.65, scale: 1, y: 0, rotate: "random(-12, 12)", stagger: 0.08, duration: 1.2 },
+      5.4
+    );
 
     // Particle Emitter Loop on Canvas
     const canvas = canvasRef.current;
@@ -2546,12 +2904,12 @@ export default function Home() {
               {/* Inner container to zoom out/blur */}
               <div className="absolute inset-0 flex items-center justify-center ch5-zoom-wrapper pointer-events-none select-none z-0">
                 <div className="max-w-4xl w-full grid grid-cols-12 gap-10 items-center">
-                  <div className="col-span-5 text-left opacity-30">
+                  <div className="col-span-5 text-left ch5-text opacity-0">
                     <span className="text-[9px] uppercase tracking-widest text-zinc-600 block mb-2">✦ Chapter 05</span>
                     <h3 className="text-3xl font-sans text-white mb-4">The Journey Ends. <br /> The Memories Never Do.</h3>
                   </div>
                   <div className="col-span-7 flex items-center justify-center gap-6">
-                    <div className="w-36 h-48 bg-zinc-900/40 border border-white/5 rounded-xl p-3 shadow-lg">
+                    <div className="w-36 h-48 bg-zinc-900/40 border border-white/5 rounded-xl p-3 shadow-lg ch5-journal opacity-0">
                       <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=300&q=80" className="w-full h-[80%] object-cover rounded" alt="dream" />
                     </div>
                     <div className="w-36 h-48 bg-zinc-900/40 border border-white/5 rounded-xl p-3 shadow-lg rotate-6">
@@ -2788,42 +3146,1512 @@ export default function Home() {
       </section>
 
       {/* ====================================================
-          SECTION 5: HOTELS & RESORTS PLACEHOLDER
+          SECTION 5: LUXURY HOTELS EXPERIENCE
           ==================================================== */}
-      {/* Chapter 5 horizontal slide zooms and blurs into this section */}
-      <section className="relative w-full min-h-screen bg-black z-20 border-t border-white/5 flex flex-col items-center justify-center text-center px-6 py-32">
-        <div className="max-w-3xl flex flex-col items-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1 }}
-            className="w-full flex flex-col items-center"
-          >
-            <div className="w-12 h-[1px] bg-amber-400/50 mb-8" />
-            <span className="text-[10px] tracking-[0.3em] font-semibold text-amber-400 uppercase font-sans mb-3 block">
-              Luxury Stays & Refined Living
+      <section 
+        ref={hotelsContainerRef}
+        className="relative w-full h-screen overflow-hidden bg-black z-20"
+      >
+        {/* Ambient shift glow backplate for Hotels */}
+        <div 
+          className="absolute inset-0 w-full h-full pointer-events-none transition-all duration-1000 hotel-bg-backplate"
+          style={{
+            background: "radial-gradient(circle at 50% 50%, rgba(251,191,36,0.14) 0%, rgba(120,53,4,0.1) 40%, rgba(9,9,11,1) 100%)"
+          }}
+        />
+
+        {/* Desktop Layout */}
+        <div className="hidden md:block w-full h-full relative z-10">
+          
+          {/* Header Category Tracker and Badge */}
+          <div className="absolute top-10 left-12 z-30 flex items-center gap-8 select-none">
+            <span className="text-[10px] tracking-[0.25em] font-semibold text-amber-400 uppercase font-sans flex items-center gap-2">
+              <Sparkles className="w-3.5 h-3.5 text-amber-400" /> Premium Stays
             </span>
-            <h2 className="text-4xl md:text-6xl font-sans tracking-tight text-white leading-none mb-6">
-              Grand Hotels <span className="font-serif italic text-amber-400 font-normal">& Resorts</span>
-            </h2>
-            <p className="text-zinc-500 text-sm md:text-base leading-relaxed max-w-[620px] mb-10 font-light select-text">
-              Relax in architecture tailored to capture the landscape. Discover private villa keys, overwater decks, and heritage sanctuaries that set the standard for fine hospitality.
-            </p>
-
-            {/* CTAs */}
-            <div className="flex flex-row items-center gap-4 pointer-events-auto">
-              <MagneticButton className="group bg-white hover:bg-transparent text-black hover:text-white px-8 py-4 rounded-full text-xs font-semibold uppercase tracking-wider border border-white flex items-center gap-3 transition-colors duration-300 cursor-pointer shadow-2xl">
-                <span>Customize Your Dream Trip</span>
-                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1.5 transition-transform duration-300" />
-              </MagneticButton>
-
-              <MagneticButton className="group bg-white/[0.03] backdrop-blur-[20px] hover:bg-white/10 px-8 py-4 rounded-full text-xs font-semibold uppercase tracking-wider flex items-center gap-2.5 transition-all duration-300 border border-white/10 hover:border-white/20 cursor-pointer">
-                <span>Talk To A Travel Expert</span>
-              </MagneticButton>
+            <div className="flex gap-4 items-center">
+              {["Luxury Resorts", "Beach Villas", "Mountain Retreats", "City Hotels", "Heritage Stays", "Private Islands"].map((cat, idx) => (
+                <span 
+                  key={`hotel-cat-${idx}`}
+                  className={`text-[9px] uppercase tracking-widest transition-all duration-500 font-sans ${
+                    idx === activeHotelTypeIndex 
+                      ? "text-white font-bold opacity-100 border-b border-amber-400/50 pb-0.5" 
+                      : "text-zinc-500 font-normal opacity-50"
+                  }`}
+                >
+                  {cat}
+                </span>
+              ))}
             </div>
-          </motion.div>
+          </div>
+
+          {/* Intro Title Overlay (Scroll-revealed, then fades out) */}
+          <div 
+            ref={hotelsIntroRef}
+            className="absolute inset-0 flex flex-col items-center justify-center text-center z-25 px-6 pointer-events-none"
+          >
+            <div className="max-w-3xl flex flex-col items-center">
+              <span className="inline-block text-[9px] font-bold uppercase tracking-[0.3em] text-amber-400 bg-amber-400/5 border border-amber-400/20 px-3 py-1 rounded-full mb-6">
+                ✦ Sanctuary Spaces
+              </span>
+              <h2 className="text-5xl md:text-7xl font-sans tracking-tight text-white leading-none mb-6 flex flex-col">
+                <span className="block opacity-95 font-light">Stay Somewhere</span>
+                <span className="block font-serif italic text-amber-400 font-normal mt-2">You'll Never</span>
+                <span className="block font-semibold mt-2">Forget.</span>
+              </h2>
+              <p className="text-zinc-500 text-sm leading-relaxed max-w-[550px] font-light">
+                Relax in spaces structured specifically to capture the landscape. Discover private overwater villas, mountain lodges, and heritage escapes that define global luxury.
+              </p>
+            </div>
+          </div>
+
+          {/* Multi-layered Scene Viewports */}
+          <div ref={hotelsContentRef} className="w-full h-full relative">
+            
+            {/* SCENE 1: ARRIVAL */}
+            <div className="absolute inset-0 w-full h-full hotel-scene-0 transition-transform duration-75 z-[10] flex items-center justify-center">
+              {/* Hotel exterior facade with water ripples overlay */}
+              <div className="absolute inset-0">
+                <img 
+                  src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1920&q=80" 
+                  className="w-full h-full object-cover" 
+                  alt="Arrival" 
+                />
+                <div className="absolute inset-0 bg-black/35 z-10 pointer-events-none" />
+                
+                {/* SVG Moving Water Reflections Overlay */}
+                <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black via-black/20 to-transparent opacity-40 z-15 pointer-events-none animate-water-ripple">
+                  <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="w-full h-full fill-none stroke-amber-400/10 stroke-[0.3]">
+                    <path d="M 0 50 Q 25 45 50 50 T 100 50" />
+                    <path d="M 0 60 Q 25 55 50 60 T 100 60" />
+                    <path d="M 0 70 Q 25 65 50 70 T 100 70" />
+                  </svg>
+                </div>
+              </div>
+
+              {/* Floating Info panel */}
+              <div className="absolute right-16 bottom-16 z-20 w-[300px] glass-card rounded-[2rem] p-6 text-left shadow-2xl">
+                <div className="flex justify-between items-start border-b border-white/5 pb-3">
+                  <div>
+                    <h4 className="text-xs uppercase tracking-[0.2em] font-bold text-white">Amanpuri Resort</h4>
+                    <span className="text-[8px] text-zinc-500 uppercase tracking-widest mt-1 block">Phuket, Thailand</span>
+                  </div>
+                  <div className="flex gap-0.5 text-amber-400">
+                    {[...Array(5)].map((_, i) => <Star key={i} className="w-2.5 h-2.5 fill-current" />)}
+                  </div>
+                </div>
+                <div className="py-4 flex flex-col gap-2.5">
+                  <div className="flex justify-between text-[9px]">
+                    <span className="text-zinc-500 uppercase">Nightly Rate</span>
+                    <span className="text-white font-bold">$1,450++</span>
+                  </div>
+                  <div className="flex justify-between text-[9px]">
+                    <span className="text-zinc-500 uppercase">Guest Score</span>
+                    <span className="text-amber-400 font-bold">4.97 / 5.0</span>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-1.5 border-t border-white/5 pt-3">
+                  {["Private Beach", "Spa", "Airport Transfer"].map((am, i) => (
+                    <span key={i} className="text-[7.5px] uppercase tracking-widest bg-white/5 px-2 py-0.5 rounded text-zinc-300">
+                      {am}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Arriving luxury element: Coordinates marker */}
+              <div className="absolute left-1/4 top-1/3 z-20 bg-zinc-950/80 border border-white/10 rounded-full px-4 py-2 flex items-center gap-2 backdrop-blur-xl animate-float-slow">
+                <MapPin className="w-3.5 h-3.5 text-amber-400" />
+                <span className="text-[8.5px] uppercase font-bold text-white tracking-widest">8.0066° N, 98.2794° E</span>
+              </div>
+            </div>
+
+            {/* SCENE 2: LOBBY */}
+            <div className="absolute inset-0 w-full h-full hotel-scene-1 transition-transform duration-75 z-[11] flex items-center justify-center pointer-events-none">
+              <div className="absolute inset-0">
+                <img 
+                  src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1920&q=80" 
+                  className="w-full h-full object-cover" 
+                  alt="Lobby" 
+                />
+                <div className="absolute inset-0 bg-black/40 z-10 pointer-events-none" />
+                
+                {/* Moving light/shadow overlay */}
+                <div className="absolute inset-0 bg-gradient-to-tr from-amber-500/5 via-transparent to-black/60 z-15 pointer-events-none" />
+              </div>
+
+              {/* Floating Info panel */}
+              <div className="absolute left-16 bottom-16 z-20 w-[300px] glass-card rounded-[2rem] p-6 text-left shadow-2xl pointer-events-auto">
+                <div className="flex justify-between items-start border-b border-white/5 pb-3">
+                  <div>
+                    <h4 className="text-xs uppercase tracking-[0.2em] font-bold text-white">Amangiri Canyon</h4>
+                    <span className="text-[8px] text-zinc-500 uppercase tracking-widest mt-1 block">Utah, USA</span>
+                  </div>
+                  <div className="flex gap-0.5 text-amber-400">
+                    {[...Array(5)].map((_, i) => <Star key={i} className="w-2.5 h-2.5 fill-current" />)}
+                  </div>
+                </div>
+                <div className="py-4 flex flex-col gap-2.5">
+                  <div className="flex justify-between text-[9px]">
+                    <span className="text-zinc-500 uppercase">Nightly Rate</span>
+                    <span className="text-white font-bold">$2,100++</span>
+                  </div>
+                  <div className="flex justify-between text-[9px]">
+                    <span className="text-zinc-500 uppercase">Guest Score</span>
+                    <span className="text-amber-400 font-bold">4.95 / 5.0</span>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-1.5 border-t border-white/5 pt-3">
+                  {["Desert Lounge", "Spa", "Private Excursions"].map((am, i) => (
+                    <span key={i} className="text-[7.5px] uppercase tracking-widest bg-white/5 px-2 py-0.5 rounded text-zinc-300">
+                      {am}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* SCENE 3: LUXURY SUITE */}
+            <div className="absolute inset-0 w-full h-full hotel-scene-2 transition-transform duration-75 z-[12] flex items-center justify-center pointer-events-none">
+              <div className="absolute inset-0">
+                <img 
+                  src="https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1920&q=80" 
+                  className="w-full h-full object-cover" 
+                  alt="Luxury Suite" 
+                />
+                <div className="absolute inset-0 bg-black/35 z-10 pointer-events-none" />
+              </div>
+
+              {/* Gentle swaying curtains overlay in front of windows */}
+              <div className="absolute right-0 top-0 h-full w-1/4 bg-white/5 backdrop-blur-[1px] border-l border-white/10 z-15 animate-curtain-sway overflow-hidden">
+                <div className="w-full h-full bg-gradient-to-r from-transparent via-white/5 to-transparent" />
+              </div>
+
+              {/* Floating Info panel */}
+              <div className="absolute right-16 top-24 z-20 w-[300px] glass-card rounded-[2rem] p-6 text-left shadow-2xl pointer-events-auto">
+                <div className="flex justify-between items-start border-b border-white/5 pb-3">
+                  <div>
+                    <h4 className="text-xs uppercase tracking-[0.2em] font-bold text-white">Amanzoe Sanctuary</h4>
+                    <span className="text-[8px] text-zinc-500 uppercase tracking-widest mt-1 block">Porto Heli, Greece</span>
+                  </div>
+                  <div className="flex gap-0.5 text-amber-400">
+                    {[...Array(5)].map((_, i) => <Star key={i} className="w-2.5 h-2.5 fill-current" />)}
+                  </div>
+                </div>
+                <div className="py-4 flex flex-col gap-2.5">
+                  <div className="flex justify-between text-[9px]">
+                    <span className="text-zinc-500 uppercase">Nightly Rate</span>
+                    <span className="text-white font-bold">$1,850++</span>
+                  </div>
+                  <div className="flex justify-between text-[9px]">
+                    <span className="text-zinc-500 uppercase">Guest Score</span>
+                    <span className="text-amber-400 font-bold">4.98 / 5.0</span>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-1.5 border-t border-white/5 pt-3">
+                  {["Infinity Pool", "Ocean View", "Private Butler"].map((am, i) => (
+                    <span key={i} className="text-[7.5px] uppercase tracking-widest bg-white/5 px-2 py-0.5 rounded text-zinc-300">
+                      {am}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* SCENE 4: INFINITY POOL */}
+            <div className="absolute inset-0 w-full h-full hotel-scene-3 transition-transform duration-75 z-[13] flex items-center justify-center pointer-events-none">
+              <div className="absolute inset-0">
+                <img 
+                  src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1920&q=80" 
+                  className="w-full h-full object-cover" 
+                  alt="Infinity Pool" 
+                />
+                <div className="absolute inset-0 bg-black/30 z-10 pointer-events-none" />
+                
+                {/* Sunset peachy/violet lighting shift backplate overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-rose-500/10 via-transparent to-purple-900/15 z-15 pointer-events-none" />
+              </div>
+
+              {/* Floating Info panel */}
+              <div className="absolute left-16 bottom-20 z-20 w-[300px] glass-card rounded-[2rem] p-6 text-left shadow-2xl pointer-events-auto">
+                <div className="flex justify-between items-start border-b border-white/5 pb-3">
+                  <div>
+                    <h4 className="text-xs uppercase tracking-[0.2em] font-bold text-white">Amanwella Resort</h4>
+                    <span className="text-[8px] text-zinc-500 uppercase tracking-widest mt-1 block">Tangalle, Sri Lanka</span>
+                  </div>
+                  <div className="flex gap-0.5 text-amber-400">
+                    {[...Array(5)].map((_, i) => <Star key={i} className="w-2.5 h-2.5 fill-current" />)}
+                  </div>
+                </div>
+                <div className="py-4 flex flex-col gap-2.5">
+                  <div className="flex justify-between text-[9px]">
+                    <span className="text-zinc-500 uppercase">Nightly Rate</span>
+                    <span className="text-white font-bold">$1,150++</span>
+                  </div>
+                  <div className="flex justify-between text-[9px]">
+                    <span className="text-zinc-500 uppercase">Guest Score</span>
+                    <span className="text-amber-400 font-bold">4.93 / 5.0</span>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-1.5 border-t border-white/5 pt-3">
+                  {["Beachfront", "Spa", "Water Excursions"].map((am, i) => (
+                    <span key={i} className="text-[7.5px] uppercase tracking-widest bg-white/5 px-2 py-0.5 rounded text-zinc-300">
+                      {am}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* SCENE 5: NIGHT EXPERIENCE & RESERVATION CONSOLE */}
+            <div className="absolute inset-0 w-full h-full hotel-scene-4 transition-transform duration-75 z-[14] flex items-center justify-center pointer-events-none">
+              <div className="absolute inset-0">
+                <img 
+                  src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=1920&q=80" 
+                  className="w-full h-full object-cover" 
+                  alt="Night Experience" 
+                />
+                <div className="absolute inset-0 bg-black/45 z-10 pointer-events-none" />
+              </div>
+
+              {/* Floating Luxury Booking Console */}
+              <div className="absolute inset-x-6 bottom-16 flex justify-center z-25 pointer-events-auto hotel-booking-console opacity-0">
+                <div className="w-full max-w-4xl glass-card rounded-[2.5rem] p-8 shadow-2xl border border-white/10 text-left flex flex-col gap-6 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-48 h-48 bg-amber-400/5 rounded-full blur-3xl pointer-events-none" />
+                  
+                  <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-white/5 pb-4">
+                    <div>
+                      <span className="text-[8px] font-bold uppercase tracking-[0.25em] text-amber-400">✦ Curation Terminal</span>
+                      <h3 className="text-xl font-sans font-semibold text-white mt-1">Reserve Your Luxury Space</h3>
+                    </div>
+                    <span className="text-[9px] text-zinc-500 uppercase tracking-widest mt-2 md:mt-0">Direct Concierge Handoff</span>
+                  </div>
+
+                  <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                    {/* Destination */}
+                    <div className="flex flex-col gap-1.5">
+                      <span className="text-[7.5px] uppercase tracking-widest text-zinc-500 font-bold">Destination</span>
+                      <div className="bg-zinc-950 border border-white/5 p-3 rounded-xl text-[10px] text-white font-semibold">
+                        Amanpuri, Phuket
+                      </div>
+                    </div>
+                    
+                    {/* Check In */}
+                    <div className="flex flex-col gap-1.5">
+                      <span className="text-[7.5px] uppercase tracking-widest text-zinc-500 font-bold">Check-In</span>
+                      <div className="bg-zinc-950 border border-white/5 p-3 rounded-xl text-[10px] text-white font-semibold">
+                        Oct 12, 2026
+                      </div>
+                    </div>
+
+                    {/* Check Out */}
+                    <div className="flex flex-col gap-1.5">
+                      <span className="text-[7.5px] uppercase tracking-widest text-zinc-500 font-bold">Check-Out</span>
+                      <div className="bg-zinc-950 border border-white/5 p-3 rounded-xl text-[10px] text-white font-semibold">
+                        Oct 19, 2026
+                      </div>
+                    </div>
+
+                    {/* Guests */}
+                    <div className="flex flex-col gap-1.5">
+                      <span className="text-[7.5px] uppercase tracking-widest text-zinc-500 font-bold">Guests</span>
+                      <div className="bg-zinc-950 border border-white/5 p-3 rounded-xl text-[10px] text-white font-semibold">
+                        02 Guests
+                      </div>
+                    </div>
+
+                    {/* Room Type */}
+                    <div className="flex flex-col gap-1.5 col-span-2 md:col-span-1">
+                      <span className="text-[7.5px] uppercase tracking-widest text-zinc-500 font-bold">Suite Type</span>
+                      <div className="bg-zinc-950 border border-white/5 p-3 rounded-xl text-[10px] text-white font-semibold">
+                        Ocean Pavilion
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between border-t border-white/5 pt-4">
+                    <span className="text-[8px] text-zinc-500 uppercase tracking-widest">Rate guarantee: verified live rates</span>
+                    <MagneticButton className="group bg-white hover:bg-transparent text-black hover:text-white px-8 py-3.5 rounded-full text-[10px] font-bold uppercase tracking-wider border border-white flex items-center gap-2 transition-colors duration-300 cursor-pointer shadow-xl">
+                      <span>Reserve Now</span>
+                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1.5 transition-transform duration-300" />
+                    </MagneticButton>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* OUTRO PORTAL: CLOUDS ZOOMING IN */}
+            <div className="absolute inset-0 z-[45] pointer-events-none overflow-hidden flex items-center justify-center hotel-clouds-outro opacity-0">
+              <div 
+                className="absolute inset-0 bg-cover bg-center" 
+                style={{
+                  backgroundImage: "url('https://images.unsplash.com/photo-1513002749550-c59d786b8e6c?auto=format&fit=crop&w=1920&q=80')"
+                }}
+              />
+              <div className="absolute inset-0 bg-black/45 z-10" />
+              {/* Ending Heading */}
+              <div className="relative z-20 text-center px-6">
+                <span className="text-[10px] tracking-[0.3em] font-semibold text-amber-400 uppercase font-sans mb-3 block">
+                  ✦ Beyond Boundaries
+                </span>
+                <h2 className="text-4xl md:text-6xl font-sans tracking-tight text-white leading-none">
+                  Your Next Destination <br />
+                  <span className="font-serif italic text-amber-400 font-normal">Is Calling.</span>
+                </h2>
+              </div>
+            </div>
+
+          </div>
+
         </div>
+
+        {/* ====================================================
+            MOBILE REBUILT SWIPE SCENE CAROUSEL
+            ==================================================== */}
+        <div className="md:hidden w-full h-full flex flex-col items-center justify-center px-6 py-20 relative z-10 select-none">
+          
+          {/* Header Mobile Tracker */}
+          <div className="absolute top-10 flex flex-col items-center">
+            <span className="text-[9px] tracking-[0.25em] font-bold text-amber-400 uppercase font-sans mb-1 block">
+              ✦ Premium Stays
+            </span>
+            <span className="text-[10px] text-zinc-500 uppercase tracking-widest font-sans block">
+              Scene 0{activeSceneIndex + 1} of 05
+            </span>
+          </div>
+
+          {/* Swipe Content Cards */}
+          <div className="relative w-full h-[410px] flex items-center justify-center">
+            <AnimatePresence mode="wait">
+              {activeSceneIndex === 0 && (
+                <motion.div
+                  key="mob-scene-0"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.4 }}
+                  className="w-full h-full rounded-[2rem] glass-card p-6 flex flex-col justify-between text-left overflow-hidden relative"
+                >
+                  <div className="absolute inset-0 z-0 opacity-20">
+                    <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=400&q=80" className="w-full h-full object-cover" alt="Arrival" />
+                  </div>
+                  <div className="relative z-10">
+                    <span className="text-[9px] uppercase font-bold text-amber-400">✦ Arrival Scene</span>
+                    <h3 className="text-2xl font-sans text-white mt-2 leading-tight">Amanpuri Resort</h3>
+                    <span className="text-[8px] text-zinc-500 block uppercase tracking-widest mt-1">Phuket, Thailand</span>
+                    <p className="text-zinc-400 text-xs mt-4 leading-relaxed font-light">
+                      Step off the flight into oceanfront pavilions, framed by high palms and the calm turquoise waves of the Andaman Sea.
+                    </p>
+                  </div>
+                  <div className="relative z-10 flex justify-between items-end border-t border-white/5 pt-4">
+                    <span className="text-[8.5px] uppercase font-bold text-white">$1,450 / night</span>
+                    <span className="text-[8.5px] uppercase font-bold text-amber-400 tracking-wider">Rating: 4.97</span>
+                  </div>
+                </motion.div>
+              )}
+
+              {activeSceneIndex === 1 && (
+                <motion.div
+                  key="mob-scene-1"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.4 }}
+                  className="w-full h-full rounded-[2rem] glass-card p-6 flex flex-col justify-between text-left overflow-hidden relative"
+                >
+                  <div className="absolute inset-0 z-0 opacity-20">
+                    <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=400&q=80" className="w-full h-full object-cover" alt="Lobby" />
+                  </div>
+                  <div className="relative z-10">
+                    <span className="text-[9px] uppercase font-bold text-amber-400">✦ The Lobby</span>
+                    <h3 className="text-2xl font-sans text-white mt-2 leading-tight">Amangiri Canyon</h3>
+                    <span className="text-[8px] text-zinc-500 block uppercase tracking-widest mt-1">Utah, USA</span>
+                    <p className="text-zinc-400 text-xs mt-4 leading-relaxed font-light">
+                      Limestone architecture and massive high ceilings frame clean views of the desert mesa, connecting you directly to nature.
+                    </p>
+                  </div>
+                  <div className="relative z-10 flex justify-between items-end border-t border-white/5 pt-4">
+                    <span className="text-[8.5px] uppercase font-bold text-white">$2,100 / night</span>
+                    <span className="text-[8.5px] uppercase font-bold text-amber-400 tracking-wider">Rating: 4.95</span>
+                  </div>
+                </motion.div>
+              )}
+
+              {activeSceneIndex === 2 && (
+                <motion.div
+                  key="mob-scene-2"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.4 }}
+                  className="w-full h-full rounded-[2rem] glass-card p-6 flex flex-col justify-between text-left overflow-hidden relative"
+                >
+                  <div className="absolute inset-0 z-0 opacity-20">
+                    <img src="https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=400&q=80" className="w-full h-full object-cover" alt="Suite" />
+                  </div>
+                  <div className="relative z-10">
+                    <span className="text-[9px] uppercase font-bold text-amber-400">✦ Luxury Suite</span>
+                    <h3 className="text-2xl font-sans text-white mt-2 leading-tight">Amanzoe Sanctuary</h3>
+                    <span className="text-[8px] text-zinc-500 block uppercase tracking-widest mt-1">Porto Heli, Greece</span>
+                    <p className="text-zinc-400 text-xs mt-4 leading-relaxed font-light">
+                      Calm, minimalist layouts with floor-to-ceiling glass windows that open up to warm Mediterranean morning sunlight.
+                    </p>
+                  </div>
+                  <div className="relative z-10 flex justify-between items-end border-t border-white/5 pt-4">
+                    <span className="text-[8.5px] uppercase font-bold text-white">$1,850 / night</span>
+                    <span className="text-[8.5px] uppercase font-bold text-amber-400 tracking-wider">Rating: 4.98</span>
+                  </div>
+                </motion.div>
+              )}
+
+              {activeSceneIndex === 3 && (
+                <motion.div
+                  key="mob-scene-3"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.4 }}
+                  className="w-full h-full rounded-[2rem] glass-card p-6 flex flex-col justify-between text-left overflow-hidden relative"
+                >
+                  <div className="absolute inset-0 z-0 opacity-20">
+                    <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=400&q=80" className="w-full h-full object-cover" alt="Pool" />
+                  </div>
+                  <div className="relative z-10">
+                    <span className="text-[9px] uppercase font-bold text-amber-400">✦ Infinity Pool</span>
+                    <h3 className="text-2xl font-sans text-white mt-2 leading-tight">Amanwella Resort</h3>
+                    <span className="text-[8px] text-zinc-500 block uppercase tracking-widest mt-1">Tangalle, Sri Lanka</span>
+                    <p className="text-zinc-400 text-xs mt-4 leading-relaxed font-light">
+                      Watch the sunset from lounge chairs beside an infinity pool that merges seamlessly with the ocean's horizon.
+                    </p>
+                  </div>
+                  <div className="relative z-10 flex justify-between items-end border-t border-white/5 pt-4">
+                    <span className="text-[8.5px] uppercase font-bold text-white">$1,150 / night</span>
+                    <span className="text-[8.5px] uppercase font-bold text-amber-400 tracking-wider">Rating: 4.93</span>
+                  </div>
+                </motion.div>
+              )}
+
+              {activeSceneIndex === 4 && (
+                <motion.div
+                  key="mob-scene-4"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.4 }}
+                  className="w-full h-full rounded-[2rem] glass-card p-6 flex flex-col justify-between text-left overflow-hidden relative pointer-events-auto"
+                >
+                  <div className="absolute inset-0 z-0 opacity-20">
+                    <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=400&q=80" className="w-full h-full object-cover" alt="Night" />
+                  </div>
+                  <div className="relative z-10 text-center flex flex-col items-center">
+                    <span className="text-[9px] uppercase font-bold text-amber-400">✦ Night Experience</span>
+                    <h3 className="text-xl font-sans text-white mt-2 leading-tight">Palazzo Chamber</h3>
+                    <span className="text-[8px] text-zinc-500 block uppercase tracking-widest mt-1">Aman Venice, Italy</span>
+                    
+                    <button className="w-full bg-white text-black font-semibold text-[10px] uppercase tracking-wider py-3.5 rounded-full mt-8 flex items-center justify-center gap-1.5 shadow-xl">
+                      <span>Reserve Now</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
+                    
+                    <button className="w-full bg-white/[0.04] text-white border border-white/10 font-semibold text-[10px] uppercase tracking-wider py-3.5 rounded-full mt-2.5">
+                      <span>Talk To Our Experts</span>
+                    </button>
+                  </div>
+                  <div className="relative z-10 flex justify-between items-end border-t border-white/5 pt-3">
+                    <span className="text-[7.5px] uppercase text-zinc-500 tracking-wider">Scene 5 / 5</span>
+                    <span className="text-[7.5px] font-bold text-amber-400 uppercase tracking-widest">AVN HOLIDAYS</span>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Controls */}
+          <div className="flex items-center gap-6 mt-8">
+            <button 
+              onClick={() => setActiveSceneIndex(prev => Math.max(0, prev - 1))}
+              className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 hover:text-white transition-colors"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+
+            <div className="flex gap-2">
+              {[0, 1, 2, 3, 4].map((i) => (
+                <button
+                  key={`dot-scene-${i}`}
+                  onClick={() => setActiveSceneIndex(i)}
+                  className={`h-2 rounded-full transition-all duration-300 ${
+                    i === activeSceneIndex ? "w-6 bg-amber-400" : "w-2 bg-white/20"
+                  }`}
+                />
+              ))}
+            </div>
+
+            <button 
+              onClick={() => setActiveSceneIndex(prev => Math.min(4, prev + 1))}
+              className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 hover:text-white transition-colors"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+
+        </div>
+
+      </section>
+
+      {/* ====================================================
+          SECTION 6: INTERACTIVE GLOBAL TRAVEL NETWORK
+          ==================================================== */}
+      <section 
+        ref={globeContainerRef}
+        className="relative w-full h-screen overflow-hidden bg-black z-20"
+      >
+        {/* Dynamic Atmospheric background with blinking stars */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-indigo-950/20 via-zinc-950 to-black z-0" />
+        
+        {/* Particle/Stars overlay */}
+        <div className="absolute inset-0 bg-stars-blink opacity-45 pointer-events-none z-1 animate-stars-blink" style={{
+          backgroundImage: "radial-gradient(circle, #fff 1px, transparent 1px)",
+          backgroundSize: "24px 24px"
+        }} />
+
+        {/* Dynamic Shifting Aurora Light Glow */}
+        <div 
+          className="absolute w-[450px] h-[450px] rounded-full blur-[120px] pointer-events-none opacity-20 z-1 animate-aurora-drift"
+          style={{
+            left: "calc(50% - 225px)",
+            top: "calc(50% - 225px)",
+            background: activeLayerIndex === 0 ? "radial-gradient(circle, rgba(20,184,166,0.3) 0%, transparent 70%)"
+                      : activeLayerIndex === 1 ? "radial-gradient(circle, rgba(245,158,11,0.25) 0%, transparent 70%)"
+                      : activeLayerIndex === 2 ? "radial-gradient(circle, rgba(99,102,241,0.3) 0%, transparent 70%)"
+                      : activeLayerIndex === 3 ? "radial-gradient(circle, rgba(168,85,247,0.25) 0%, transparent 70%)"
+                      : activeLayerIndex === 4 ? "radial-gradient(circle, rgba(244,63,94,0.25) 0%, transparent 70%)"
+                      : "radial-gradient(circle, rgba(16,185,129,0.25) 0%, transparent 70%)"
+          }}
+        />
+
+        {/* ====================================================
+            DESKTOP INTERACTIVE STORYTELLING GLOBE
+            ==================================================== */}
+        <div className="hidden md:block w-full h-full relative z-10 select-none">
+          
+          {/* Header Trackers */}
+          <div className="absolute top-10 left-12 z-30 flex items-center gap-8">
+            <span className="text-[10px] tracking-[0.25em] font-semibold text-amber-400 uppercase font-sans flex items-center gap-2">
+              <Compass className="w-3.5 h-3.5 text-amber-400 animate-spin [animation-duration:10s]" /> Global Reach
+            </span>
+            <div className="flex gap-4 items-center">
+              {["Packages", "Hotels", "Corporate", "Visas", "Group Tours", "Rentals"].map((lyr, idx) => (
+                <span 
+                  key={`globe-lyr-${idx}`}
+                  className={`text-[9px] uppercase tracking-widest transition-all duration-500 font-sans ${
+                    idx === activeLayerIndex 
+                      ? "text-white font-bold opacity-100 border-b border-amber-400/50 pb-0.5" 
+                      : "text-zinc-500 font-normal opacity-50"
+                  }`}
+                >
+                  {lyr}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Intro Title Overlay (Fades out on scroll) */}
+          <div 
+            ref={globeIntroRef}
+            className="absolute inset-0 flex flex-col items-center justify-center text-center z-[25] px-6 pointer-events-none"
+          >
+            <div className="max-w-3xl flex flex-col items-center">
+              <span className="inline-block text-[9px] font-bold uppercase tracking-[0.3em] text-amber-400 bg-amber-400/5 border border-amber-400/20 px-3 py-1 rounded-full mb-6">
+                ✦ World Network
+              </span>
+              <h2 className="text-5xl md:text-7xl font-sans tracking-tight text-white leading-none mb-6 flex flex-col">
+                <span className="block opacity-95 font-light">The World Is</span>
+                <span className="block font-serif italic text-amber-400 font-normal mt-2">Waiting For</span>
+                <span className="block font-semibold mt-2">You.</span>
+              </h2>
+              <p className="text-zinc-500 text-sm leading-relaxed max-w-[550px] font-light">
+                Discover seamless logistics that expand the map. Watch routes connect and services integrate dynamically as we coordinate your global footprint.
+              </p>
+            </div>
+          </div>
+
+          {/* Left panel: Live travel insights */}
+          <div className="absolute left-12 top-1/4 z-20 w-[240px] flex flex-col gap-4 text-left globe-panel-left">
+            <div className="glass-card rounded-2xl p-4 flex flex-col gap-3">
+              <span className="text-[8px] font-bold uppercase tracking-widest text-zinc-500">Live Insights</span>
+              
+              <div className="border-b border-white/5 pb-2 flex justify-between items-center text-[10px]">
+                <span className="text-zinc-400">Zurich Temp</span>
+                <span className="text-white font-bold">14°C Rain</span>
+              </div>
+              <div className="border-b border-white/5 pb-2 flex justify-between items-center text-[10px]">
+                <span className="text-zinc-400">Local Time (Kyoto)</span>
+                <span className="text-white font-semibold">23:45 JST</span>
+              </div>
+              <div className="flex justify-between items-center text-[10px]">
+                <span className="text-zinc-400">EUR Rate</span>
+                <span className="text-emerald-400 font-bold">1.08 USD</span>
+              </div>
+            </div>
+
+            <div className="glass-card rounded-2xl p-4 flex flex-col gap-2">
+              <span className="text-[8px] font-bold uppercase tracking-widest text-zinc-500">Curated Tip</span>
+              <p className="text-[9.5px] text-zinc-400 leading-normal font-light">
+                "Pack light for Alpine transfers. Always maintain digital copies of your visa waivers before departure."
+              </p>
+            </div>
+          </div>
+
+          {/* Right panel: Flight metrics / details */}
+          <div className="absolute right-12 top-1/4 z-20 w-[240px] flex flex-col gap-4 text-left globe-panel-right">
+            <div className="glass-card rounded-2xl p-4 flex flex-col gap-3">
+              <span className="text-[8px] font-bold uppercase tracking-widest text-zinc-500">Flight Telemetry</span>
+              
+              <div className="border-b border-white/5 pb-2 flex flex-col gap-0.5">
+                <div className="flex justify-between text-[10px] text-white font-semibold">
+                  <span>Mumbai ➔ Paris</span>
+                  <span className="text-amber-400">8h 40m</span>
+                </div>
+                <span className="text-[8px] text-zinc-500 uppercase tracking-widest">Direct Route</span>
+              </div>
+              
+              <div className="flex flex-col gap-0.5">
+                <div className="flex justify-between text-[10px] text-white font-semibold">
+                  <span>London ➔ Dubai</span>
+                  <span className="text-amber-400">6h 50m</span>
+                </div>
+                <span className="text-[8px] text-zinc-500 uppercase tracking-widest">Direct Route</span>
+              </div>
+            </div>
+
+            <div className="glass-card rounded-2xl p-4 flex flex-col gap-2">
+              <span className="text-[8px] font-bold uppercase tracking-widest text-zinc-500">Best Season</span>
+              <div className="flex justify-between items-center text-[10px]">
+                <span className="text-zinc-400">Maldives Escapes</span>
+                <span className="text-white font-semibold">Dec ➔ Apr</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Center: The Globe Sphere */}
+          <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+            <div className="relative w-[440px] h-[440px] globe-sphere-wrapper scale-100 flex items-center justify-center">
+              
+              {/* Outer 3D sphere mask element */}
+              <div className="relative w-[380px] h-[380px] rounded-full overflow-hidden border border-white/10 bg-zinc-950 shadow-[0_0_80px_rgba(251,191,36,0.15)] flex items-center justify-center">
+                
+                {/* 3D shading covers */}
+                <div className="absolute inset-0 bg-gradient-to-tr from-black via-transparent to-white/8 z-20 pointer-events-none" />
+                <div className="absolute inset-0 shadow-[inset_-25px_-25px_60px_rgba(0,0,0,0.85),_inset_25px_25px_60px_rgba(255,255,255,0.06)] z-20 pointer-events-none" />
+                
+                {/* Dotted/Vector world map background track translating horizontally */}
+                <div 
+                  ref={globeMapRef}
+                  className="absolute inset-y-0 left-0 w-[240%] h-full flex flex-row globe-map-wide z-10 pointer-events-none"
+                  style={{ willChange: "transform" }}
+                >
+                  {/* Tiled Vector Earth Outline Map duplicate to simulate loop */}
+                  {[0, 1].map((tile) => (
+                    <div key={tile} className="w-[120%] h-full relative flex-shrink-0 opacity-45">
+                      {/* Dotted grid simulating land */}
+                      <div className="absolute inset-0 scale-95 opacity-80" style={{
+                        backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.08) 1.2px, transparent 1.2px)",
+                        backgroundSize: "16px 16px"
+                      }} />
+                      
+                      {/* Standard high-res vector silhouette contours drawn manually */}
+                      <svg viewBox="0 0 1000 500" className="absolute inset-0 w-full h-full fill-white/[0.04] stroke-white/5 stroke-[0.5]">
+                        {/* Americas */}
+                        <path d="M 100 100 Q 150 180 200 240 T 260 480 Q 220 480 180 380 T 120 200 T 80 120 Z" />
+                        {/* Eurasia & Africa */}
+                        <path d="M 450 120 Q 550 80 750 100 T 900 150 Q 850 350 780 480 Q 620 420 540 380 T 450 120 Z" />
+                        <path d="M 480 200 Q 580 250 620 380 Q 480 480 420 350 Z" />
+                        {/* Australia */}
+                        <path d="M 820 380 Q 880 380 900 440 T 840 460 Z" />
+                      </svg>
+
+                      {/* City Marker dots that rotate inside the tiled map */}
+                      {/* Paris */}
+                      <div className="absolute left-[54%] top-[24%] flex items-center justify-center">
+                        <span className="w-2 h-2 rounded-full bg-amber-400 relative z-10" />
+                        <span className="absolute w-6 h-6 rounded-full bg-amber-400/30 animate-marker-pulse" />
+                        <span className="absolute -top-5 text-[7px] text-white font-bold tracking-widest uppercase bg-black/85 px-1 py-0.5 rounded border border-white/5">Paris</span>
+                      </div>
+
+                      {/* Dubai */}
+                      <div className="absolute left-[62%] top-[34%] flex items-center justify-center">
+                        <span className="w-2 h-2 rounded-full bg-sky-400 relative z-10" />
+                        <span className="absolute w-6 h-6 rounded-full bg-sky-400/30 animate-marker-pulse" />
+                        <span className="absolute -top-5 text-[7px] text-white font-bold tracking-widest uppercase bg-black/85 px-1 py-0.5 rounded border border-white/5">Dubai</span>
+                      </div>
+
+                      {/* Singapore */}
+                      <div className="absolute left-[74%] top-[44%] flex items-center justify-center">
+                        <span className="w-2 h-2 rounded-full bg-emerald-400 relative z-10" />
+                        <span className="absolute w-6 h-6 rounded-full bg-emerald-400/30 animate-marker-pulse" />
+                        <span className="absolute -top-5 text-[7px] text-white font-bold tracking-widest uppercase bg-black/85 px-1 py-0.5 rounded border border-white/5">Singapore</span>
+                      </div>
+                    </div>
+                  ))}
+
+                  {/* SVG glowing routes overlay on top of land silhouettes */}
+                  <svg className="absolute inset-0 w-full h-full z-15 overflow-visible fill-none stroke-[1.5]">
+                    {/* Layer 1: Holiday Packages (Cyan paths) */}
+                    <path 
+                      d="M 540 120 Q 620 170 740 220" 
+                      stroke="rgba(20, 184, 166, 0.7)" 
+                      className="globe-path-packages" 
+                      style={{ strokeDasharray: "400", strokeDashoffset: "400" }} 
+                    />
+                    {/* Layer 2: Luxury Hotels (Amber paths) */}
+                    <path 
+                      d="M 620 170 Q 580 150 540 120" 
+                      stroke="rgba(245, 158, 11, 0.7)" 
+                      className="globe-path-hotels" 
+                      style={{ strokeDasharray: "400", strokeDashoffset: "400" }} 
+                    />
+                    {/* Layer 3: Corporate (Indigo paths) */}
+                    <path 
+                      d="M 540 120 Q 740 180 820 380" 
+                      stroke="rgba(99, 102, 241, 0.7)" 
+                      className="globe-path-corporate" 
+                      style={{ strokeDasharray: "400", strokeDashoffset: "400" }} 
+                    />
+                    {/* Layer 4: Visa (Violet paths) */}
+                    <path 
+                      d="M 740 220 Q 800 240 820 380" 
+                      stroke="rgba(168, 85, 247, 0.7)" 
+                      className="globe-path-visa" 
+                      style={{ strokeDasharray: "400", strokeDashoffset: "400" }} 
+                    />
+                    {/* Layer 5: Groups (Rose paths) */}
+                    <path 
+                      d="M 620 170 Q 700 320 820 380" 
+                      stroke="rgba(244, 63, 94, 0.7)" 
+                      className="globe-path-groups" 
+                      style={{ strokeDasharray: "400", strokeDashoffset: "400" }} 
+                    />
+                    {/* Layer 6: Car Rentals (Emerald paths) */}
+                    <path 
+                      d="M 540 120 Q 640 320 740 220" 
+                      stroke="rgba(16, 185, 129, 0.7)" 
+                      className="globe-path-rentals" 
+                      style={{ strokeDasharray: "400", strokeDashoffset: "400" }} 
+                    />
+                  </svg>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom layout: Statistics bar dashboard */}
+          <div className="absolute inset-x-12 bottom-12 z-20 glass-card rounded-[2rem] p-6 text-left flex justify-between items-center globe-stats-bar">
+            <div>
+              <span className="text-[8px] text-zinc-500 uppercase tracking-widest block mb-0.5">Scale Matrix</span>
+              <div className="text-[11px] font-bold text-white uppercase tracking-wider">AVN Telemetry Hub</div>
+            </div>
+            
+            <div className="flex gap-16 select-none text-center">
+              <div>
+                <div className="text-xl font-sans font-bold text-white leading-none">{globeCountCountries}</div>
+                <span className="text-[8px] text-zinc-500 uppercase tracking-widest mt-1.5 block">Countries</span>
+              </div>
+              
+              <div>
+                <div className="text-xl font-sans font-bold text-amber-400 leading-none">{globeCountFlights}+</div>
+                <span className="text-[8px] text-zinc-500 uppercase tracking-widest mt-1.5 block">Flights</span>
+              </div>
+
+              <div>
+                <div className="text-xl font-sans font-bold text-white leading-none">{globeCountHotels}+</div>
+                <span className="text-[8px] text-zinc-500 uppercase tracking-widest mt-1.5 block">Hotels</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Floating Gold Membership Card CTA (Animates in at final scroll progress zoom) */}
+          <div className="absolute inset-0 z-30 flex items-center justify-center pointer-events-none select-none globe-cta-membership opacity-0 scale-75">
+            <div className="max-w-md w-full glass-card rounded-[2.5rem] p-8 border border-amber-400/20 shadow-[0_0_80px_rgba(251,191,36,0.1)] text-center flex flex-col items-center pointer-events-auto relative overflow-hidden">
+              {/* Golden metallic reflection grid */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-amber-400/[0.03] via-transparent to-amber-400/[0.08] pointer-events-none" />
+              
+              <span className="inline-block text-[9px] font-bold uppercase tracking-[0.25em] text-amber-400 bg-amber-400/5 border border-amber-400/20 px-3 py-1 rounded-full mb-6">
+                ✦ AVN Super Saver Club
+              </span>
+              <h2 className="text-3xl md:text-5xl font-sans text-white leading-tight mb-4">
+                Where Will Your <br />
+                <span className="font-serif italic text-amber-400 font-normal">Story Begin?</span>
+              </h2>
+              <p className="text-zinc-400 text-xs leading-relaxed max-w-[340px] mb-8 font-light select-text">
+                Dwell in exclusive upgrades, airport fast track priority, and elite hotel concierge reservations from a single golden membership profile.
+              </p>
+
+              {/* CTAs */}
+              <div className="flex flex-row items-center gap-3 w-full justify-center">
+                <MagneticButton className="group bg-white hover:bg-transparent text-black hover:text-white px-6 py-3.5 rounded-full text-[10px] font-bold uppercase tracking-wider border border-white flex items-center gap-2 transition-colors duration-300 cursor-pointer shadow-xl">
+                  <span>Explore Network</span>
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1.5 transition-transform duration-300" />
+                </MagneticButton>
+
+                <MagneticButton className="group bg-white/[0.03] backdrop-blur-[20px] hover:bg-white/10 px-6 py-3.5 rounded-full text-[10px] font-bold uppercase tracking-wider flex items-center gap-2 transition-all duration-300 border border-white/10 hover:border-white/20 cursor-pointer">
+                  <span>Plan My Journey</span>
+                </MagneticButton>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        {/* ====================================================
+            MOBILE REBUILT SWIPE SYSTEM EXPERIENCE
+            ==================================================== */}
+        <div className="md:hidden w-full h-full flex flex-col items-center justify-center px-6 py-20 relative z-10 select-none">
+          
+          {/* Header tracker */}
+          <div className="absolute top-10 flex flex-col items-center">
+            <span className="text-[9px] tracking-[0.25em] font-bold text-amber-400 uppercase font-sans mb-1 block">
+              ✦ Global Reach
+            </span>
+            <span className="text-[10px] text-zinc-500 uppercase tracking-widest font-sans block">
+              Layer 0{activeLayerIndex + 1} of 06
+            </span>
+          </div>
+
+          {/* Swipe Content Cards */}
+          <div className="relative w-full h-[400px] flex items-center justify-center">
+            <AnimatePresence mode="wait">
+              {activeLayerIndex === 0 && (
+                <motion.div
+                  key="mob-lyr-0"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.4 }}
+                  className="w-full h-full rounded-[2rem] glass-card p-6 flex flex-col justify-between text-left"
+                >
+                  <div>
+                    <span className="text-[9px] uppercase font-bold text-amber-400">✦ Layer One</span>
+                    <h3 className="text-2xl font-sans text-white mt-2 leading-tight">Holiday Packages</h3>
+                    <p className="text-zinc-400 text-xs mt-4 leading-relaxed font-light">
+                      Connecting raw inspiration to curated itineraries. Travel through Maldives or Bali on routes designed for fine hospitality.
+                    </p>
+                  </div>
+                  <div className="flex justify-between items-end border-t border-white/5 pt-4">
+                    <span className="text-[8.5px] uppercase font-bold text-white">120+ Destinations</span>
+                    <span className="text-[7.5px] uppercase text-zinc-500 tracking-wider">1/6 Layers</span>
+                  </div>
+                </motion.div>
+              )}
+
+              {activeLayerIndex === 1 && (
+                <motion.div
+                  key="mob-lyr-1"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.4 }}
+                  className="w-full h-full rounded-[2rem] glass-card p-6 flex flex-col justify-between text-left"
+                >
+                  <div>
+                    <span className="text-[9px] uppercase font-bold text-amber-400">✦ Layer Two</span>
+                    <h3 className="text-2xl font-sans text-white mt-2 leading-tight">Luxury Hotels</h3>
+                    <p className="text-zinc-400 text-xs mt-4 leading-relaxed font-light">
+                      Overwater cabanas, heritage palaces, and modern sand retreats linked through a unified concierge check-in pipeline.
+                    </p>
+                  </div>
+                  <div className="flex justify-between items-end border-t border-white/5 pt-4">
+                    <span className="text-[8.5px] uppercase font-bold text-white">850+ Partners</span>
+                    <span className="text-[7.5px] uppercase text-zinc-500 tracking-wider">2/6 Layers</span>
+                  </div>
+                </motion.div>
+              )}
+
+              {activeLayerIndex === 2 && (
+                <motion.div
+                  key="mob-lyr-2"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.4 }}
+                  className="w-full h-full rounded-[2rem] glass-card p-6 flex flex-col justify-between text-left"
+                >
+                  <div>
+                    <span className="text-[9px] uppercase font-bold text-amber-400">✦ Layer Three</span>
+                    <h3 className="text-2xl font-sans text-white mt-2 leading-tight">Corporate Travel</h3>
+                    <p className="text-zinc-400 text-xs mt-4 leading-relaxed font-light">
+                      Executive logistics, visa waivers, and fast-track priority flights matching corporate schedules globally.
+                    </p>
+                  </div>
+                  <div className="flex justify-between items-end border-t border-white/5 pt-4">
+                    <span className="text-[8.5px] uppercase font-bold text-white">24×7 Assistance</span>
+                    <span className="text-[7.5px] uppercase text-zinc-500 tracking-wider">3/6 Layers</span>
+                  </div>
+                </motion.div>
+              )}
+
+              {activeLayerIndex === 3 && (
+                <motion.div
+                  key="mob-lyr-3"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.4 }}
+                  className="w-full h-full rounded-[2rem] glass-card p-6 flex flex-col justify-between text-left"
+                >
+                  <div>
+                    <span className="text-[9px] uppercase font-bold text-amber-400">✦ Layer Four</span>
+                    <h3 className="text-2xl font-sans text-white mt-2 leading-tight">Visa Assistance</h3>
+                    <p className="text-zinc-400 text-xs mt-4 leading-relaxed font-light">
+                      Bypass scheduling friction. Enjoy streamlined international visa applications with direct concierge tracking.
+                    </p>
+                  </div>
+                  <div className="flex justify-between items-end border-t border-white/5 pt-4">
+                    <span className="text-[8.5px] uppercase font-bold text-white">99% Approval rate</span>
+                    <span className="text-[7.5px] uppercase text-zinc-500 tracking-wider">4/6 Layers</span>
+                  </div>
+                </motion.div>
+              )}
+
+              {activeLayerIndex === 4 && (
+                <motion.div
+                  key="mob-lyr-4"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.4 }}
+                  className="w-full h-full rounded-[2rem] glass-card p-6 flex flex-col justify-between text-left"
+                >
+                  <div>
+                    <span className="text-[9px] uppercase font-bold text-amber-400">✦ Layer Five</span>
+                    <h3 className="text-2xl font-sans text-white mt-2 leading-tight">Group Tours</h3>
+                    <p className="text-zinc-400 text-xs mt-4 leading-relaxed font-light">
+                      Immersive local expeditions led by experts. Designed for groups seeking deeper cultural integration.
+                    </p>
+                  </div>
+                  <div className="flex justify-between items-end border-t border-white/5 pt-4">
+                    <span className="text-[8.5px] uppercase font-bold text-white">5000+ Happy Guests</span>
+                    <span className="text-[7.5px] uppercase text-zinc-500 tracking-wider">5/6 Layers</span>
+                  </div>
+                </motion.div>
+              )}
+
+              {activeLayerIndex === 5 && (
+                <motion.div
+                  key="mob-lyr-5"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.4 }}
+                  className="w-full h-full rounded-[2rem] glass-card p-6 flex flex-col justify-between text-left pointer-events-auto"
+                >
+                  <div className="text-center flex flex-col items-center">
+                    <span className="text-[9px] uppercase font-bold text-amber-400">✦ Gold Member</span>
+                    <h3 className="text-xl font-sans text-white mt-2 leading-tight">Super Saver Club</h3>
+                    <p className="text-zinc-400 text-[10px] mt-2 leading-relaxed font-light">
+                      Bespoke loyalty matrices. Unlock priority airport lounge gates and flight upgrades instantly.
+                    </p>
+                    
+                    <button className="w-full bg-white text-black font-semibold text-[10px] uppercase tracking-wider py-3.5 rounded-full mt-6 flex items-center justify-center gap-1.5 shadow-xl">
+                      <span>Explore Network</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                  <div className="flex justify-between items-end border-t border-white/5 pt-3">
+                    <span className="text-[7.5px] uppercase text-zinc-500 tracking-wider">6/6 Layers</span>
+                    <span className="text-[7.5px] font-bold text-amber-400 uppercase tracking-widest">AVN CLUB</span>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Swipe Controls */}
+          <div className="flex items-center gap-6 mt-8">
+            <button 
+              onClick={() => setActiveLayerIndex(prev => Math.max(0, prev - 1))}
+              className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 hover:text-white transition-colors"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+
+            <div className="flex gap-2">
+              {[0, 1, 2, 3, 4, 5].map((i) => (
+                <button
+                  key={`dot-lyr-${i}`}
+                  onClick={() => setActiveLayerIndex(i)}
+                  className={`h-2 rounded-full transition-all duration-300 ${
+                    i === activeLayerIndex ? "w-6 bg-amber-400" : "w-2 bg-white/20"
+                  }`}
+                />
+              ))}
+            </div>
+
+            <button 
+              onClick={() => setActiveLayerIndex(prev => Math.min(5, prev + 1))}
+              className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 hover:text-white transition-colors"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+
+        </div>
+
+      </section>
+
+      {/* ====================================================
+          SECTION 7: SUPER SAVER CLUB — LUXURY MEMBERSHIP EXPERIENCE
+          ==================================================== */}
+      <section 
+        ref={clubContainerRef}
+        className="relative w-full h-screen overflow-hidden bg-black z-20"
+      >
+        {/* Dark luxury lighting backplate shift */}
+        <div 
+          className="absolute inset-0 w-full h-full pointer-events-none transition-all duration-1000"
+          style={{
+            background: "radial-gradient(circle at 50% 50%, rgba(251,191,36,0.06) 0%, rgba(9,9,11,1) 100%)"
+          }}
+        />
+
+        {/* Visual portals that crossfade matching activeBenefitIndex */}
+        {[
+          "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1505080856163-267d49b30022?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1595818970664-4be341753c45?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80"
+        ].map((imgUrl, i) => (
+          <div 
+            key={`club-bg-${i}`}
+            className={`absolute inset-0 transition-opacity duration-[1000ms] pointer-events-none z-0 club-bg-visual-${i}`}
+            style={{
+              opacity: i === activeBenefitIndex ? 0.22 : 0
+            }}
+          >
+            <img 
+              src={imgUrl} 
+              className="w-full h-full object-cover scale-105" 
+              alt="Benefit visual background" 
+            />
+            <div className="absolute inset-0 bg-black/65" />
+          </div>
+        ))}
+
+        {/* Ambient auroras/starfield overlay */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-zinc-950/0 via-zinc-950/20 to-zinc-950 z-[2] pointer-events-none" />
+
+        {/* ====================================================
+            DESKTOP MEMBERSHIP UNVEILING LAYOUT
+            ==================================================== */}
+        <div className="hidden md:block w-full h-full relative z-10 select-none">
+          
+          {/* Header Trackers */}
+          <div className="absolute top-10 left-12 z-30 flex items-center gap-8">
+            <span className="text-[10px] tracking-[0.25em] font-semibold text-amber-400 uppercase font-sans flex items-center gap-2">
+              <Award className="w-3.5 h-3.5 text-amber-400 animate-pulse" /> Exclusive Membership
+            </span>
+            <div className="flex gap-2">
+              {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
+                <div 
+                  key={`ben-dot-${i}`}
+                  className={`h-[3px] rounded-full transition-all duration-500 ${
+                    i === activeBenefitIndex ? "w-6 bg-amber-400" : "w-2 bg-white/10"
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Intro Title Overlay (Fades out on scroll) */}
+          <div 
+            ref={clubIntroRef}
+            className="absolute inset-0 flex flex-col items-center justify-center text-center z-[25] px-6 pointer-events-none"
+          >
+            <div className="max-w-3xl flex flex-col items-center">
+              <span className="inline-block text-[9px] font-bold uppercase tracking-[0.3em] text-amber-400 bg-amber-400/5 border border-amber-400/20 px-3 py-1 rounded-full mb-6">
+                ✦ Circle of Curation
+              </span>
+              <h2 className="text-5xl md:text-7xl font-sans tracking-tight text-white leading-none mb-6 flex flex-col">
+                <span className="block opacity-95 font-light">Travel Like</span>
+                <span className="block font-serif italic text-amber-400 font-normal mt-2">An Insider.</span>
+              </h2>
+              <p className="text-zinc-500 text-sm leading-relaxed max-w-[550px] font-light">
+                Unlock custom benefits, private transfers, and hotel room upgrades curated for members who appreciate the art of fine travel.
+              </p>
+            </div>
+          </div>
+
+          {/* Left Side: Floating Glass Benefit details (Emerges one by one) */}
+          <div className="absolute left-16 top-[28%] z-20 w-[380px] text-left flex flex-col gap-4">
+            <AnimatePresence mode="wait">
+              {[
+                { title: "Priority Booking Concierge", desc: "Skip booking lanes with immediate, direct access to AVN's network operators." },
+                { title: "Exclusive Room Upgrades", desc: "Enjoy space upgrades, overwater villa keys, and luxury cabin access." },
+                { title: "Luxury Airport Lounge Access", desc: "Unwind inside premium lounge hubs globally before boarding your flights." },
+                { title: "Bespoke Private Transfers", desc: "Luxury sedan pickups and chauffeur handoffs directly coordinate on tarmac." },
+                { title: "Dedicated Local concierge", desc: "Walk custom trails, catamaran journeys, and restaurant checks guided locally." },
+                { title: "Visa Assistance Validation", desc: "Fast-track international visa filings with guaranteed expert validations." },
+                { title: "Early Access Stays Deals", desc: "Browse curated private villas weeks before standard release schedules." },
+                { title: "Special Festival Escapes", desc: "Enjoy holiday packages custom-tailored for regional festivals and holidays." },
+                { title: "Corporate Business Perks", desc: "Flexible flight cancellations and corporate board meeting coordination." },
+                { title: "Lifetime Memories Stamps", desc: "Log stamps, stories, and photographs inside your Gold member profile." }
+              ].map((ben, idx) => {
+                if (idx !== activeBenefitIndex) return null;
+                return (
+                  <motion.div
+                    key={`ben-panel-${idx}`}
+                    initial={{ opacity: 0, x: -30, filter: "blur(6px)" }}
+                    animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+                    exit={{ opacity: 0, x: 30, filter: "blur(6px)" }}
+                    transition={{ duration: 0.5 }}
+                    className="glass-card rounded-[2.5rem] p-8 shadow-2xl relative border border-white/8 overflow-hidden w-full"
+                  >
+                    <div className="absolute top-0 right-0 w-36 h-20 bg-gradient-to-bl from-white/[0.01] to-transparent pointer-events-none" />
+                    <span className="text-[8.5px] font-bold text-amber-400 uppercase tracking-[0.2em]">Benefit 0{idx + 1}</span>
+                    <h3 className="text-xl font-sans font-semibold text-white mt-2 mb-4 leading-tight">{ben.title}</h3>
+                    <p className="text-zinc-400 text-xs font-light leading-relaxed select-text">{ben.desc}</p>
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
+
+            {/* Premium count-up statistics overlay */}
+            <div className="glass-card rounded-2xl p-5 flex justify-between items-center mt-4">
+              <div>
+                <div className="text-lg font-sans font-bold text-white leading-none">{clubCountMembers}+</div>
+                <span className="text-[8px] text-zinc-500 uppercase tracking-widest mt-1 block">Active Members</span>
+              </div>
+              <div className="h-6 w-[1px] bg-white/5" />
+              <div>
+                <div className="text-lg font-sans font-bold text-amber-400 leading-none">{clubCountOffers}+</div>
+                <span className="text-[8px] text-zinc-500 uppercase tracking-widest mt-1 block">Custom Perks</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Center/Right: Floating Centurion-Style Matte Black Membership Card */}
+          <div className="absolute inset-0 flex items-center justify-center z-15 pointer-events-none">
+            <div className="relative w-[400px] h-[400px] flex items-center justify-center">
+              
+              {/* Matte Black Hero Card */}
+              <div className="relative w-[340px] h-[210px] club-hero-card rounded-2xl shadow-2xl bg-zinc-950 border border-white/10 z-10 p-6 flex flex-col justify-between overflow-hidden">
+                {/* Gold foil metallic reflection shimmer sweep overlay */}
+                <div className="absolute inset-0 animate-shimmer-foil pointer-events-none opacity-45 z-0" />
+                
+                {/* Card Crest Emblem and Header */}
+                <div className="flex justify-between items-start relative z-10">
+                  <Compass className="w-8 h-8 text-amber-400/80 animate-spin [animation-duration:15s]" />
+                  <span className="text-[8.5px] font-mono tracking-[0.25em] text-amber-400 font-bold uppercase">AVN SA SAVER</span>
+                </div>
+
+                {/* Embossed gold foil logo text */}
+                <div className="my-auto flex flex-col text-left pl-1 relative z-10">
+                  <h4 className="text-sm font-sans uppercase font-bold tracking-[0.3em] text-white leading-none">SUPER SAVER</h4>
+                  <span className="text-[7px] text-zinc-500 uppercase tracking-[0.25em] mt-1">BLACK MEMERSHIP NO: #AVN-8041926</span>
+                </div>
+
+                {/* Bottom card metrics */}
+                <div className="border-t border-white/5 pt-3.5 flex justify-between items-center relative z-10">
+                  <div>
+                    <span className="text-[7px] text-zinc-600 uppercase tracking-widest block leading-none">Member Since</span>
+                    <span className="text-[9px] font-bold text-white mt-1 block font-mono">2016</span>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-[7px] text-zinc-600 uppercase tracking-widest block leading-none">Curation Level</span>
+                    <span className="text-[9px] font-bold text-amber-400 mt-1 block uppercase tracking-wider">ELITE INSIDER</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          {/* Bottom layout: Material Tiers Swatches (Slides in at final scroll stage) */}
+          <div className="absolute inset-x-12 bottom-12 z-20 flex justify-between items-center club-tier-samples opacity-0">
+            <div>
+              <span className="text-[8px] text-zinc-500 uppercase tracking-widest block mb-0.5">Tier Matrix</span>
+              <div className="text-[11px] font-bold text-white uppercase tracking-wider">Interactive material cards</div>
+            </div>
+            
+            <div className="flex gap-8 select-none">
+              {/* Silver brushed aluminum */}
+              <div 
+                onClick={() => setActiveTierIndex(0)}
+                className={`w-32 h-20 rounded-xl bg-gradient-to-tr from-zinc-400 via-zinc-200 to-zinc-500 p-3 flex flex-col justify-between text-left cursor-pointer border transition-all duration-300 ${
+                  activeTierIndex === 0 ? "scale-105 border-white shadow-xl" : "scale-90 border-white/5 opacity-55 hover:opacity-85"
+                }`}
+              >
+                <span className="text-[8px] font-bold text-zinc-800 uppercase tracking-wider leading-none">Silver</span>
+                <span className="text-[7px] text-zinc-900 font-mono mt-auto">BRUSHED ALUM</span>
+              </div>
+
+              {/* Gold luxury foil */}
+              <div 
+                onClick={() => setActiveTierIndex(1)}
+                className={`w-32 h-20 rounded-xl bg-gradient-to-tr from-amber-600 via-amber-200 to-amber-700 p-3 flex flex-col justify-between text-left cursor-pointer border transition-all duration-300 ${
+                  activeTierIndex === 1 ? "scale-105 border-amber-300 shadow-xl" : "scale-90 border-white/5 opacity-55 hover:opacity-85"
+                }`}
+              >
+                <span className="text-[8px] font-bold text-amber-900 uppercase tracking-wider leading-none">Gold</span>
+                <span className="text-[7px] text-amber-950 font-mono mt-auto">LUXURY FOIL</span>
+              </div>
+
+              {/* Black matte ceramic */}
+              <div 
+                onClick={() => setActiveTierIndex(2)}
+                className={`w-32 h-20 rounded-xl bg-gradient-to-tr from-zinc-950 via-zinc-900 to-zinc-900 p-3 flex flex-col justify-between text-left cursor-pointer border transition-all duration-300 ${
+                  activeTierIndex === 2 ? "scale-105 border-white/30 shadow-2xl" : "scale-90 border-white/5 opacity-55 hover:opacity-85"
+                }`}
+              >
+                <span className="text-[8px] font-bold text-white uppercase tracking-wider leading-none">Black</span>
+                <span className="text-[7px] text-zinc-400 font-mono mt-auto">MATTE CERAMIC</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Centered Massive Ending CTA (Fades in over dissolved cards) */}
+          <div className="absolute inset-0 z-30 flex flex-col items-center justify-center text-center club-ending-cta opacity-0 pointer-events-none">
+            <div className="max-w-3xl flex flex-col items-center pointer-events-auto">
+              <span className="inline-block text-[10px] tracking-[0.3em] font-semibold text-amber-400 uppercase font-sans mb-4 block select-none">
+                ✦ Elite Travel Club
+              </span>
+              <h2 className="text-4xl md:text-7xl font-sans tracking-tight text-white leading-none mb-8">
+                Join The Circle Of <br />
+                <span className="font-serif italic text-amber-400 font-normal">Extraordinary Travel.</span>
+              </h2>
+              <p className="text-zinc-400 text-sm leading-relaxed max-w-[550px] mb-12 font-light select-text">
+                Becoming a member of AVN Holidays Saver Club is an invitation to experiences curated to inspire. Connect with our concierge to secure your elite access code.
+              </p>
+
+              {/* CTAs */}
+              <div className="flex flex-row items-center gap-4">
+                <MagneticButton className="group bg-white hover:bg-transparent text-black hover:text-white px-8 py-4 rounded-full text-xs font-semibold uppercase tracking-wider border border-white flex items-center gap-3 transition-colors duration-300 cursor-pointer shadow-2xl">
+                  <span>Become A Member</span>
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1.5 transition-transform duration-300" />
+                </MagneticButton>
+
+                <MagneticButton className="group bg-white/[0.03] backdrop-blur-[20px] hover:bg-white/10 px-8 py-4 rounded-full text-xs font-semibold uppercase tracking-wider flex items-center gap-2.5 transition-all duration-300 border border-white/10 hover:border-white/20 cursor-pointer">
+                  <span>Explore Club Benefits</span>
+                </MagneticButton>
+              </div>
+            </div>
+          </div>
+
+          {/* Drifting travel photos scatter overlay (outro transition) */}
+          {[
+            "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&q=80",
+            "https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&w=400&q=80",
+            "https://images.unsplash.com/photo-1528181304800-2f190854897d?auto=format&fit=crop&w=400&q=80",
+            "https://images.unsplash.com/photo-1439066615861-d1af74d74000?auto=format&fit=crop&w=400&q=80",
+            "https://images.unsplash.com/photo-1595818970664-4be341753c45?auto=format&fit=crop&w=400&q=80",
+            "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=400&q=80"
+          ].map((imgUrl, idx) => (
+            <div 
+              key={`drift-photo-${idx}`}
+              className="absolute w-44 h-52 bg-zinc-950 border border-white/8 rounded-xl p-2.5 shadow-2xl z-35 pointer-events-none select-none club-drifting-photo opacity-0"
+              style={{
+                left: `${12 + idx * 13}%`,
+                bottom: `${12 + (idx % 2) * 14}%`,
+              }}
+            >
+              <img 
+                src={imgUrl} 
+                className="w-full h-[80%] object-cover rounded" 
+                alt="Drifting memories" 
+              />
+              <span className="text-[7.5px] text-zinc-500 block text-center mt-2 font-serif italic">
+                {[
+                  "Ubud, Bali",
+                  "Maldives Lagoon",
+                  "Swiss Alps Valley",
+                  "Sandy Beaches",
+                  "Srinagar Lakes",
+                  "Dubai Skylines"
+                ][idx]}
+              </span>
+            </div>
+          ))}
+
+        </div>
+
+        {/* ====================================================
+            MOBILE REBUILT SWIPE SYSTEM EXPERIENCE
+            ==================================================== */}
+        <div className="md:hidden w-full h-full flex flex-col items-center justify-center px-6 py-20 relative z-10 select-none">
+          
+          {/* Header tracker */}
+          <div className="absolute top-10 flex flex-col items-center">
+            <span className="text-[9px] tracking-[0.25em] font-bold text-amber-400 uppercase font-sans mb-1 block">
+              ✦ Exclusive Club
+            </span>
+            <span className="text-[10px] text-zinc-500 uppercase tracking-widest font-sans block">
+              Benefit 0{activeBenefitIndex + 1} of 10
+            </span>
+          </div>
+
+          {/* Swipe Content Cards */}
+          <div className="relative w-full h-[410px] flex items-center justify-center">
+            <AnimatePresence mode="wait">
+              {activeBenefitIndex === 0 && (
+                <motion.div
+                  key="mob-ben-0"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.4 }}
+                  className="w-full h-full rounded-[2rem] glass-card p-6 flex flex-col justify-between text-left"
+                >
+                  <div>
+                    <span className="text-[9px] uppercase font-bold text-amber-400">✦ Benefit One</span>
+                    <h3 className="text-2xl font-sans text-white mt-2 leading-tight">Priority Booking</h3>
+                    <p className="text-zinc-400 text-xs mt-4 leading-relaxed font-light">
+                      Skip booking lanes with immediate, direct access to AVN's network operators and direct concierge lines.
+                    </p>
+                  </div>
+                  <div className="flex justify-between items-end border-t border-white/5 pt-4">
+                    <span className="text-[8.5px] uppercase font-bold text-white">Direct Concierge</span>
+                    <span className="text-[7.5px] uppercase text-zinc-500 tracking-wider">1/10 Perks</span>
+                  </div>
+                </motion.div>
+              )}
+
+              {activeBenefitIndex === 1 && (
+                <motion.div
+                  key="mob-ben-1"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.4 }}
+                  className="w-full h-full rounded-[2rem] glass-card p-6 flex flex-col justify-between text-left"
+                >
+                  <div>
+                    <span className="text-[9px] uppercase font-bold text-amber-400">✦ Benefit Two</span>
+                    <h3 className="text-2xl font-sans text-white mt-2 leading-tight">Luxury Upgrades</h3>
+                    <p className="text-zinc-400 text-xs mt-4 leading-relaxed font-light">
+                      Enjoy room space upgrades, private overwater villas, and priority yacht deck bookings.
+                    </p>
+                  </div>
+                  <div className="flex justify-between items-end border-t border-white/5 pt-4">
+                    <span className="text-[8.5px] uppercase font-bold text-white">Suite Upgrades</span>
+                    <span className="text-[7.5px] uppercase text-zinc-500 tracking-wider">2/10 Perks</span>
+                  </div>
+                </motion.div>
+              )}
+
+              {activeBenefitIndex === 2 && (
+                <motion.div
+                  key="mob-ben-2"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.4 }}
+                  className="w-full h-full rounded-[2rem] glass-card p-6 flex flex-col justify-between text-left"
+                >
+                  <div>
+                    <span className="text-[9px] uppercase font-bold text-amber-400">✦ Benefit Three</span>
+                    <h3 className="text-2xl font-sans text-white mt-2 leading-tight">Lounge Access</h3>
+                    <p className="text-zinc-400 text-xs mt-4 leading-relaxed font-light">
+                      Relax inside premium executive terminal lounge hubs globally before boarding your flights.
+                    </p>
+                  </div>
+                  <div className="flex justify-between items-end border-t border-white/5 pt-4">
+                    <span className="text-[8.5px] uppercase font-bold text-white">First-Class Lounges</span>
+                    <span className="text-[7.5px] uppercase text-zinc-500 tracking-wider">3/10 Perks</span>
+                  </div>
+                </motion.div>
+              )}
+
+              {activeBenefitIndex === 3 && (
+                <motion.div
+                  key="mob-ben-3"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.4 }}
+                  className="w-full h-full rounded-[2rem] glass-card p-6 flex flex-col justify-between text-left"
+                >
+                  <div>
+                    <span className="text-[9px] uppercase font-bold text-amber-400">✦ Benefit Four</span>
+                    <h3 className="text-2xl font-sans text-white mt-2 leading-tight">Private Transfers</h3>
+                    <p className="text-zinc-400 text-xs mt-4 leading-relaxed font-light">
+                      Luxury sedan coordinates and private tarmac chauffeur handoffs directly set upon arrival.
+                    </p>
+                  </div>
+                  <div className="flex justify-between items-end border-t border-white/5 pt-4">
+                    <span className="text-[8.5px] uppercase font-bold text-white">Chauffeur Rides</span>
+                    <span className="text-[7.5px] uppercase text-zinc-500 tracking-wider">4/10 Perks</span>
+                  </div>
+                </motion.div>
+              )}
+
+              {activeBenefitIndex >= 4 && (
+                <motion.div
+                  key="mob-ben-5"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.4 }}
+                  className="w-full h-full rounded-[2rem] glass-card p-6 flex flex-col justify-between text-left pointer-events-auto"
+                >
+                  <div className="text-center flex flex-col items-center">
+                    <span className="text-[9px] uppercase font-bold text-amber-400">✦ Club Membership</span>
+                    <h3 className="text-xl font-sans text-white mt-2 leading-tight">Join The Circle</h3>
+                    <p className="text-zinc-400 text-[10px] mt-2 leading-relaxed font-light">
+                      Enjoy room space upgrades and tarmac private chauffeur coordinates from a single gold profile.
+                    </p>
+                    
+                    <button className="w-full bg-white text-black font-semibold text-[10px] uppercase tracking-wider py-3.5 rounded-full mt-8 flex items-center justify-center gap-1.5 shadow-xl">
+                      <span>Become A Member</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                  <div className="flex justify-between items-end border-t border-white/5 pt-3">
+                    <span className="text-[7.5px] uppercase text-zinc-500 tracking-wider">Join Club</span>
+                    <span className="text-[7.5px] font-bold text-amber-400 uppercase tracking-widest">AVN CLUB</span>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Swipe controls */}
+          <div className="flex items-center gap-6 mt-8">
+            <button 
+              onClick={() => setActiveBenefitIndex(prev => Math.max(0, prev - 1))}
+              className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 hover:text-white transition-colors"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+
+            <div className="flex gap-2">
+              {[0, 1, 2, 3, 4].map((i) => (
+                <button
+                  key={`dot-swipe-ben-${i}`}
+                  onClick={() => setActiveBenefitIndex(i)}
+                  className={`h-2 rounded-full transition-all duration-300 ${
+                    i === activeBenefitIndex ? "w-6 bg-amber-400" : "w-2 bg-white/20"
+                  }`}
+                />
+              ))}
+            </div>
+
+            <button 
+              onClick={() => setActiveBenefitIndex(prev => Math.min(9, prev + 1))}
+              className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 hover:text-white transition-colors"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+
+        </div>
+
       </section>
 
       {/* ====================================================
