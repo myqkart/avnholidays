@@ -201,4 +201,97 @@ body {
   animation: card-float-member 8s ease-in-out infinite;
 }
 
+/* ── FOOTER ANIMATIONS ── */
+@keyframes globe-rotate {
+  from { transform: translateX(0%); }
+  to   { transform: translateX(-50%); }
+}
+.animate-globe-rotate {
+  animation: globe-rotate 28s linear infinite;
+}
+
+@keyframes globe-cloud-rotate {
+  from { transform: translateX(0%); }
+  to   { transform: translateX(-50%); }
+}
+.animate-globe-cloud-rotate {
+  animation: globe-cloud-rotate 20s linear infinite;
+}
+
+@keyframes shooting-star {
+  0%   { transform: translate(0, 0) rotate(-35deg); opacity: 1; width: 0; }
+  20%  { width: 90px; opacity: 0.9; }
+  100% { transform: translate(320px, 140px) rotate(-35deg); opacity: 0; width: 120px; }
+}
+.animate-shooting-star {
+  animation: shooting-star 1.6s ease-out forwards;
+}
+
+@keyframes star-twinkle-footer {
+  0%, 100% { opacity: 0.2; transform: scale(1); }
+  50% { opacity: 0.9; transform: scale(1.6); }
+}
+.animate-star-twinkle-footer {
+  animation: star-twinkle-footer 3s ease-in-out infinite;
+}
+
+@keyframes constellation-pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.9; }
+}
+.animate-constellation-pulse {
+  animation: constellation-pulse 4s ease-in-out infinite;
+}
+
+@keyframes float-island {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+.animate-float-island {
+  animation: float-island 6s ease-in-out infinite;
+}
+
+@keyframes whatsapp-ripple {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+.animate-whatsapp-ripple {
+  animation: whatsapp-ripple 2s ease-out infinite;
+}
+
+@keyframes orbit-dot {
+  from { transform: rotate(0deg) translateX(22px) rotate(0deg); }
+  to   { transform: rotate(360deg) translateX(22px) rotate(-360deg); }
+}
+.animate-orbit-dot {
+  animation: orbit-dot 4s linear infinite;
+}
+
+@keyframes social-float {
+  0%, 100% { transform: translateY(0px) rotate(-1deg); }
+  50% { transform: translateY(-5px) rotate(1deg); }
+}
+.animate-social-float {
+  animation: social-float 5s ease-in-out infinite;
+}
+
+@keyframes aurora-footer {
+  0%, 100% { opacity: 0.12; transform: scaleX(1) scaleY(1) rotate(0deg); }
+  50% { opacity: 0.22; transform: scaleX(1.12) scaleY(1.08) rotate(2deg); }
+}
+.animate-aurora-footer {
+  animation: aurora-footer 18s ease-in-out infinite;
+}
+
+@keyframes particle-drift {
+  0%   { transform: translate(0, 0); opacity: 0; }
+  10%  { opacity: 0.7; }
+  90%  { opacity: 0.5; }
+  100% { transform: translate(var(--dx, 30px), var(--dy, -80px)); opacity: 0; }
+}
+.animate-particle-drift {
+  animation: particle-drift var(--dur, 8s) ease-in-out infinite;
+}
+
+
 
